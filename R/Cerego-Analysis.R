@@ -1,4 +1,3 @@
-# Load the data. See DataPrep.R for how this data was prepared.
 # There are three data frames, math, biology1 (for students in the first
 # half of the year), and biology2 (for students in the second half of the year).
 # The biology course was revised and the new version started in July.
@@ -7,15 +6,17 @@ load('Data/CeregoData-Final.Rda')
 set.seed(2112) # For reproducibility
 
 # Load R packages
-library(ggplot2)
+library(tidyverse)
 library(mice)
-library(MatchIt)
+# library(MatchIt)
 library(Matching)
 library(party)
 library(PSAgraphics)
 library(psa)
 library(cowplot)
 library(reshape2)
+library(psych)
+library(Gmisc)
 library(psych)
 
 source('R/cv.bal.psa.R')
@@ -50,11 +51,32 @@ table(biology2$Ethnicity, useNA = 'ifany')
 
 prop.table(table(c(math$Ethnicity, biology1$Ethnicity, biology2$Ethnicity), useNA = 'ifany'))
 
+math$FirstGeneration <- math$MothersEducation %in% c('01-HS_DNF', '02-HS_GRAD') &
+	math$FathersEducation %in% c('01-HS_DNF', '02-HS_GRAD')
+biology1$FirstGeneration <- biology1$MothersEducation %in% c('01-HS_DNF', '02-HS_GRAD') &
+	biology1$FathersEducation %in% c('01-HS_DNF', '02-HS_GRAD')
+biology2$FirstGeneration <- biology2$MothersEducation %in% c('01-HS_DNF', '02-HS_GRAD') &
+	biology2$FathersEducation %in% c('01-HS_DNF', '02-HS_GRAD')
+
+# Demographics
+getDescriptionStatsBy(
+	math,
+	Gender, Ethnicity, Military, DegreeLevel, Income, Pell, Employment, ESL, FirstGeneration,
+	Age, GPA, TransferCredits, EarnedCredits, 
+	by = Treat,
+	useNA = 'always'
+)
+
+
+##### Unadjusted differences ###################################################
+
+describeBy(math$FinalAverage, group = math$Treat, mat = TRUE, skew = FALSE)
+
 
 # Model formula for phase I to estimate propensity scores using logistic regression
 psa.formula <- Treat ~ Gender + Ethnicity + Military + DegreeLevel + GPA + OverallGPA +
 	TransferCredits + CreditRatio + EarnedCredits + Income + Age + DaysEnrolled +
-	MothersEducation + FathersEducation + Employment + ESL + Pell + Repeat
+	FirstGeneration + Employment + ESL + Pell + Repeat
 
 ##### Recoding #################################################################
 # Recode missing values to zero for minutes using Cerego
@@ -73,10 +95,11 @@ biology1[is.na(biology1$Second),]$Second <- 0
 
 str(math[,all.vars(psa.formula)])
 
+
 # Recode covariates
 math$Income <- as.integer(math$Income)
-math$MothersEducation <- as.integer(math$MothersEducation)
-math$FathersEducation <- as.integer(math$FathersEducation)
+# math$MothersEducation <- as.integer(math$MothersEducation)
+# math$FathersEducation <- as.integer(math$FathersEducation)
 math$Employment <- as.integer(math$Employment)
 math$DegreeLevel <- as.character(math$DegreeLevel)
 math[math$DegreeLevel %in% c('Non-Matriculate', 'Certificate'),]$DegreeLevel <- 'None'
@@ -86,8 +109,8 @@ math[!(math$Ethnicity %in% c('Black','Hispanic','White')),]$Ethnicity <- 'Other'
 math$Ethnicity <- as.factor(as.character(math$Ethnicity))
 
 biology1$Income <- as.integer(biology1$Income)
-biology1$MothersEducation <- as.integer(biology1$MothersEducation)
-biology1$FathersEducation <- as.integer(biology1$FathersEducation)
+# biology1$MothersEducation <- as.integer(biology1$MothersEducation)
+# biology1$FathersEducation <- as.integer(biology1$FathersEducation)
 biology1$Employment <- as.integer(biology1$Employment)
 biology1$DegreeLevel <- as.character(biology1$DegreeLevel)
 biology1[biology1$DegreeLevel %in% c('Non-Matriculate', 'Certificate'),]$DegreeLevel <- 'None'
@@ -97,8 +120,8 @@ biology1[!(biology1$Ethnicity %in% c('Black','Hispanic','White')),]$Ethnicity <-
 biology1$Ethnicity <- as.factor(as.character(biology1$Ethnicity))
 
 biology2$Income <- as.integer(biology2$Income)
-biology2$MothersEducation <- as.integer(biology2$MothersEducation)
-biology2$FathersEducation <- as.integer(biology2$FathersEducation)
+# biology2$MothersEducation <- as.integer(biology2$MothersEducation)
+# biology2$FathersEducation <- as.integer(biology2$FathersEducation)
 biology2$Employment <- as.integer(biology2$Employment)
 biology2$DegreeLevel <- as.character(biology2$DegreeLevel)
 biology2[biology2$DegreeLevel %in% c('Non-Matriculate', 'Certificate'),]$DegreeLevel <- 'None'
@@ -178,8 +201,8 @@ bio1.complete[bio1.complete$DegreeLevel == 4,]$DegreeLevel <- 0
 math.complete$Ethnicity <- relevel(math.complete$Ethnicity, ref='White')
 
 math.lr.miss <- glm(Treat ~ ., 
-					data=cbind(math.complete[,all.vars(psa.formula)], math.shadow.matrix),
-					family=binomial)
+					data = cbind(math.complete[,all.vars(psa.formula)], math.shadow.matrix),
+					family = binomial(link='logit'))
 # We are looking for any "_miss" variables that are statistically significant predictors
 summary(math.lr.miss) # Good. Moving on
 
@@ -233,7 +256,6 @@ math.results <- psa.cerego(df = math,
 						   df.complete = math.complete,
 						   out.cols = c(paste0('Quiz', 1:8), 'FinalAverage'),
 						   treat.cols = c(paste0('Week', 1:8), 'Minutes') )
-						   #by.cols=c('Ethnicity', 'Gender', 'Military', 'Employment'))
 
 math.results.summary <- data.frame()
 for(i in names(math.results)) {
@@ -266,7 +288,7 @@ ggplot(math.usage[math.usage$nweeks > 0 & !is.na(math.usage$FinalAverage) &
 				  	math.usage$FinalAverage > 10,], 
 	   aes(x=factor(nweeks), y=FinalAverage)) + 
 	geom_boxplot() + xlab('Weeks Used Cerego') + ylab('Final Average')
-ggsave('Figures/Math-FinalAverageByWeeks.png', width=10, height=4.5)
+# ggsave('Figures/Math-FinalAverageByWeeks.png', width=10, height=4.5)
 describeBy(math.usage$FinalAverage, group=math.usage$nweeks, mat=TRUE)
 
 ##### Biology 2 ################################################################
@@ -305,11 +327,16 @@ plot(mb.bio2)
 summary(mb.bio2)
 
 # Phase II of PSA
-bio2.results <- psa.cerego(biology2, bio2.complete,
+bio2.results <- psa.cerego(biology2, 
+						   bio2.complete,
 						   out.cols = c(paste0('Quiz', 1:7), 'FinalAverage'),
 						   treat.cols = c(paste0('Week', 1:7), 'Minutes'),
-						   nStrata=4, caliper=0.25, replace=FALSE, ties=TRUE, M=2,
-						   by.cols=c('Gender'))
+						   nStrata = 4, 
+						   caliper = 0.25,
+						   replace = TRUE, 
+						   ties = TRUE,
+						   M = 2,
+						   by.cols = c('Gender'))
 
 bio2.results.summary <- data.frame()
 for(i in names(bio2.results)) {
@@ -319,12 +346,16 @@ for(i in names(bio2.results)) {
 
 # View(bio2.results.summary)
 
-p.bio2.match <- cerego_matching_plot(bio2.results.summary) +
+p.bio2.match <- cerego_matching_plot(bio2.results.summary,
+									 x_limits = c(paste0('Quiz', 1:7), 'FinalAverage'),
+									 x_labels = c(paste0('Quiz', 1:7), 'FinalAverage')) +
 	ggtitle('Average Treatment Effect using Matching: Biology B')
 p.bio2.match
 ggplot2::ggsave('Figures/PSA-Bio2-Matching.pdf', width=10, height=4.5)
 
-p.bio2.strat <- cerego_strata_plot(bio2.results.summary) +
+p.bio2.strat <- cerego_strata_plot(bio2.results.summary,
+								   x_limits = c(paste0('Quiz', 1:7), 'FinalAverage'),
+								   x_labels = c(paste0('Quiz', 1:7), 'FinalAverage')) +
 	ggtitle('Average Treatment Effect using Stratification: Biology B')
 p.bio2.strat
 ggplot2::ggsave('Figures/PSA-Bio2-Strata.pdf', width=10, height=4.5)
@@ -416,19 +447,86 @@ results.summary
 
 write.csv(results.summary, 'Tables/SummaryResults.csv', row.names=FALSE)
 
+save(math.mice, bio1.mice, bio2.mice,
+	 math.lr, bio1.lr, bio2.lr,
+	 math.results, bio1.results, bio2.results,
+	 file = 'Data/Results.rda')
+
 # Save combined figures
-plot_grid(p.math.match + theme(legend.position='bottom'), 
-		  p.math.strata + theme(legend.position='bottom'),
-		  ncol=2, nrow=1)
-cowplot::ggsave('Figures/PSA-Combined-Math.pdf', width=18, height=5)
+# plot_grid(p.math.match + theme(legend.position='bottom'), 
+# 		  p.math.strata + theme(legend.position='bottom'),
+# 		  ncol=2, nrow=1)
+# cowplot::ggsave('Figures/PSA-Combined-Math.pdf', width=18, height=5)
+ 
+# plot_grid(p.bio2.match + theme(legend.position='bottom'), 
+# 		  p.bio2.strat + theme(legend.position='bottom'), 
+# 		  ncol=2, nrow=1)
+# cowplot::ggsave('Figures/PSA-Combined-Bio2.pdf', width=18, height=5)
+ 
+# plot_grid(p.bio1.match + theme(legend.position='bottom'),
+# 		  p.bio1.strat + theme(legend.position='bottom'),
+# 		  nrow=1, ncol=2)
+# cowplot::ggsave('Figures/PSA-Combined-Bio1.pdf', width=12, height=5)
+ 				
+##### Student Sanctification ###################################################
+library(likert)
 
-plot_grid(p.bio2.match + theme(legend.position='bottom'), 
-		  p.bio2.strat + theme(legend.position='bottom'), 
-		  ncol=2, nrow=1)
-cowplot::ggsave('Figures/PSA-Combined-Bio2.pdf', width=18, height=5)
+math.usage <- math[,c(29:32)] %>% melt() %>% drop_na(value)
+ggplot(math.usage, aes(x = variable)) + geom_bar() +
+	geom_text(aes(label = ..count..), stat = 'count', vjust = -0.4) +
+	xlab('How did you access Cerego?') + ylab('Count')
 
-plot_grid(p.bio1.match + theme(legend.position='bottom'),
-		  p.bio1.strat + theme(legend.position='bottom'),
-		  nrow=1, ncol=2)
-cowplot::ggsave('Figures/PSA-Combined-Bio1.pdf', width=12, height=5)
-				
+
+
+
+# Math
+math.cerego1 <- math[,c(34:41)]
+math.cerego1.likert <- likert(math.cerego1)
+plot(math.cerego1.likert)
+
+math.cerego2 <- math[,c(42:50)]
+math.cerego2.likert <- likert(math.cerego2)
+plot(math.cerego2.likert)
+
+# Bio 1
+bio1.cerego1 <- biology1[,c(28:35)]
+bio1.cerego1.likert <- likert(bio1.cerego1)
+plot(bio1.cerego1.likert)
+
+bio1.cerego2 <- biology1[,c(36:44)]
+bio1.cerego2.likert <- likert(bio1.cerego2)
+plot(bio1.cerego2.likert)
+
+# Bio 2
+bio2.cerego1 <- biology2[,c(34:41)]
+bio2.cerego1.likert <- likert(bio2.cerego1)
+plot(bio2.cerego1.likert)
+
+bio2.cerego2 <- biology2[,c(42:50)]
+bio2.cerego2.likert <- likert(bio2.cerego2)
+plot(bio2.cerego2.likert)
+
+# Combine likert plots
+math.cerego1$Subject <- 'Math'
+bio1.cerego1$Subject <- 'Biology 1'
+bio2.cerego1$Subject <- 'Biology 2'
+
+cerego1 <- rbind(math.cerego1, bio1.cerego1, bio2.cerego1)
+cerego1.likert <- likert(cerego1[,-ncol(cerego1)], grouping = cerego1$Subject)
+plot(cerego1.likert)
+
+cerego1.likert.overall <- likert(cerego1[,-ncol(cerego1)])
+plot(cerego1.likert.overall)
+ggplot2::ggsave('Figures/Likert-overall1.pdf', width=10, height=4.5)
+
+math.cerego2$Subject <- 'Math'
+bio1.cerego2$Subject <- 'Biology 1'
+bio2.cerego2$Subject <- 'Biology 2'
+
+cerego2 <- rbind(math.cerego2, bio1.cerego2, bio2.cerego2)
+cerego2.likert <- likert(cerego2[,-ncol(cerego2)], grouping = cerego2$Subject)
+plot(cerego2.likert)
+
+cerego2.likert.overall <- likert(cerego2[,-ncol(cerego2)])
+plot(cerego2.likert.overall)
+ggplot2::ggsave('Figures/Likert-overall2.pdf', width=10, height=4.5)

@@ -12,29 +12,29 @@ psa.cerego <- function(df,
 					   replace = FALSE, 
 					   ties = FALSE, 
 					   estimand = 'ATE',
-					   M = 1) {
+					   M = 1,
+					   treat.minutes = 5) {
 	stopifnot(length(out.cols) == length(treat.cols))
 	quizzes <- list()
 	for(i in seq_along(out.cols)) {
 		out.col <- out.cols[i]
 		treat.col <- treat.cols[i]
-		# rows <- which(!is.na(df[,out.col]) & 
-		# 	!is.na(df[,treat.col]) & 
-		# 	df[,out.col] > 0) # Exclude 0s (assume student didn't take the quiz)
-		treat.rows <- which(!is.na(df[,out.col]) & 
-								!is.na(df[,treat.col]) & 
-								df[,out.col] > 0 &
-								df[,treat.col] > treat.minutes)
-		control.rows <- which(!is.na(df[,out.col]) & 
-							  	!is.na(df[,treat.col]) & 
-							  	df[,out.col] > 0 &
-							  	df[,treat.col] <= treat.minutes) 
+		treat.rows <- which(
+			!is.na(df[,out.col]) & 
+			!is.na(df[,treat.col]) & 
+			df[,treat.col] > treat.minutes)
+		control.rows <- which(
+			!is.na(df[,out.col]) & 
+			!is.na(df[,treat.col]) & 
+			df[,treat.col] <= treat.minutes) 
 		rows <- c(treat.rows, control.rows)
 		
 		# Treatment students who did not use the treatment for this outcome
-		holdouts <- which(!is.na(df[,out.col]) & 
+		holdouts <- which(
+			!is.na(df[,out.col]) & 
 			!is.na(df[,treat.col]) &
-			df[,treat.col] <= treat.minutes & df$Treat)
+			df[,treat.col] <= treat.minutes & 
+			df$Treat)
 		
 		strata <- cut(df.complete$ps, 
 					  quantile(df.complete$ps, seq(0,1,1/nStrata)), 
