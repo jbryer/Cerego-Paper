@@ -1,0 +1,96 @@
+# Appendix A: Descriptive Statistics
+
+```{r setup-descriptives, echo=FALSE, error=FALSE, message=FALSE, warning=FALSE, caption='Demographics for Mathematics', results='hide'}
+library(flextable)
+library(gtsummary)
+library(magrittr)
+
+load('../Data/CeregoData-Final.Rda')
+
+levels(math$Ethnicity)[2] <- 'Black'
+math[!(math$Ethnicity %in% c('Black','Hispanic','White')),]$Ethnicity <- 'Other'
+math$Ethnicity <- as.factor(as.character(math$Ethnicity))
+
+levels(biology1$Ethnicity)[2] <- 'Black'
+biology1[!(biology1$Ethnicity %in% c('Black','Hispanic','White')),]$Ethnicity <- 'Other'
+biology1$Ethnicity <- as.factor(as.character(biology1$Ethnicity))
+
+levels(biology2$Ethnicity)[2] <- 'Black'
+biology2[!(biology2$Ethnicity %in% c('Black','Hispanic','White')),]$Ethnicity <- 'Other'
+biology2$Ethnicity <- as.factor(as.character(biology2$Ethnicity))
+
+math$DegreeLevel <- as.character(math$DegreeLevel)
+math[math$DegreeLevel %in% c('Non-Matriculate', 'Certificate'),]$DegreeLevel <- 'None'
+math[is.na(math$DegreeLevel),]$DegreeLevel <- 'None'
+math$DegreeLevel <- as.factor(math$DegreeLevel)
+
+biology1$DegreeLevel <- as.character(biology1$DegreeLevel)
+biology1[biology1$DegreeLevel %in% c('Non-Matriculate', 'Certificate'),]$DegreeLevel <- 'None'
+biology1[is.na(biology1$DegreeLevel),]$DegreeLevel <- 'None'
+biology1$DegreeLevel <- as.factor(biology1$DegreeLevel)
+
+biology2$DegreeLevel <- as.character(biology2$DegreeLevel)
+biology2[biology2$DegreeLevel %in% c('Non-Matriculate', 'Certificate'),]$DegreeLevel <- 'None'
+biology2[is.na(biology2$DegreeLevel),]$DegreeLevel <- 'None'
+biology2$DegreeLevel <- as.factor(biology2$DegreeLevel)
+
+
+math$FirstGeneration <- math$MothersEducation %in% c('01-HS_DNF', '02-HS_GRAD') &
+	math$FathersEducation %in% c('01-HS_DNF', '02-HS_GRAD')
+biology1$FirstGeneration <- biology1$MothersEducation %in% c('01-HS_DNF', '02-HS_GRAD') &
+	biology1$FathersEducation %in% c('01-HS_DNF', '02-HS_GRAD')
+biology2$FirstGeneration <- biology2$MothersEducation %in% c('01-HS_DNF', '02-HS_GRAD') &
+	biology2$FathersEducation %in% c('01-HS_DNF', '02-HS_GRAD')
+```
+
+## Descriptive Statistics for Mathematics
+
+```{r math-descriptives, echo=FALSE, error=FALSE, message=FALSE, warning=FALSE, caption='Descriptive Statistics for Mathematics', results='asis'}
+math %>% select(Treat, Gender, Ethnicity, Military, DegreeLevel, Income, Pell,
+				Employment, ESL, FirstGeneration,
+				Age, GPA, TransferCredits, EarnedCredits) %>%
+	tbl_summary(by = Treat,
+	 			missing_text = "(Missing)") %>%
+	modify_header(label ~ "**Variable**",
+				  stat_1 ~ "**Control**",
+				  stat_2 ~ "**Treatment**") %>%
+	modify_caption('Descriptive Statistics for Mathematics') %>%
+	bold_labels() #%>% as_gt()
+```
+
+\clearpage
+
+## Descriptive Statistics for Biology A
+
+```{r biology1-descriptives, echo=FALSE, error=FALSE, message=FALSE, warning=FALSE, caption='Descriptive Statistics for Biology 1', results='asis'}
+biology1 %>% select(Treat, Gender, Ethnicity, Military, DegreeLevel, Income, Pell,
+				Employment, ESL, FirstGeneration,
+				Age, GPA, TransferCredits, EarnedCredits) %>%
+	tbl_summary(by = Treat,
+	 			missing_text = "(Missing)") %>% 
+	modify_header(label ~ "**Variable**",
+				  stat_1 ~ "**Control**",
+				  stat_2 ~ "**Treatment**") %>%
+	modify_caption('Descriptive Statistics for Biology 1') %>%
+	bold_labels() #%>% as_gt()
+```
+
+\clearpage
+
+## Descriptive Statistics for Biology B
+
+```{r biology2-descriptives, echo=FALSE, error=FALSE, message=FALSE, warning=FALSE, caption='Descriptive Statistics for Biology 2', results='asis'}
+biology2 %>% select(Treat, Gender, Ethnicity, Military, DegreeLevel, Income, Pell,
+				Employment, ESL, FirstGeneration,
+				Age, GPA, TransferCredits, EarnedCredits) %>%
+	tbl_summary(by = Treat,
+	 			missing_text = "(Missing)") %>% 
+	modify_header(label ~ "**Variable**",
+				  stat_1 ~ "**Control**",
+				  stat_2 ~ "**Treatment**") %>%
+	modify_caption('Descriptive Statistics for Biology 2') %>%
+	bold_labels() #%>% as_gt()
+```
+
+\newpage
+

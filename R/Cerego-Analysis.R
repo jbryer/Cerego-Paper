@@ -8,7 +8,6 @@ set.seed(2112) # For reproducibility
 # Load R packages
 library(tidyverse)
 library(mice)
-# library(MatchIt)
 library(Matching)
 library(party)
 library(PSAgraphics)
@@ -67,6 +66,21 @@ getDescriptionStatsBy(
 	useNA = 'always'
 )
 
+getDescriptionStatsBy(
+	biology1,
+	Gender, Ethnicity, Military, DegreeLevel, Income, Pell, Employment, ESL, FirstGeneration,
+	Age, GPA, TransferCredits, EarnedCredits, 
+	by = Treat,
+	useNA = 'always'
+)
+
+getDescriptionStatsBy(
+	biology2,
+	Gender, Ethnicity, Military, DegreeLevel, Income, Pell, Employment, ESL, FirstGeneration,
+	Age, GPA, TransferCredits, EarnedCredits, 
+	by = Treat,
+	useNA = 'always'
+)
 
 ##### Unadjusted differences ###################################################
 
@@ -214,6 +228,7 @@ math.complete$ps <- fitted(math.lr, math.complete)
 # print(math.rf)
 # math.tree <- rpart(update.formula(psa.formula, factor(Treat) ~ .), data=math.complete)
 # plot(math.tree); text(math.tree)
+# For simplicity of reporting sticking with logistic regression.
 
 summary(math.lr)
 summary(math.complete$ps)
@@ -223,16 +238,23 @@ summary(math.complete$ps)
 # summary(math.lr.aic)
 # math.complete$ps <- fitted(math.lr.aic)
 
-ggplot(math.complete, aes(x=ps, fill=Treat)) + geom_density() + facet_wrap(~ Treat, ncol=1)
-ggplot(math.complete, aes(x=Treat, y=ps)) + geom_boxplot()
+ggplot(math.complete, aes(x=ps, fill=Treat)) +
+	geom_density() + 
+	facet_wrap(~ Treat, ncol=1)
+ggplot(math.complete, aes(x=Treat, y=ps)) + 
+	geom_boxplot()
 
-ggplot(math.complete, aes(x=ps, color=Treat)) + geom_density() + facet_wrap(~ Gender, ncol=1)
+ggplot(math.complete, aes(x=ps, color=Treat)) + 
+	geom_density() + 
+	facet_wrap(~ Gender, ncol=1)
 ggplot(math.complete, aes(y=ps, x=Treat, color=Treat)) + geom_boxplot() + 
-	coord_flip() + facet_wrap(~ Ethnicity, ncol=1)
+	coord_flip() + 
+	facet_wrap(~ Ethnicity, ncol=1)
 
 # Loess plot
 ggplot(math.complete, aes(x=ps, y=FinalAverage, color=Treat)) + 
-	geom_point(alpha=.3) + geom_smooth(method='loess', se=FALSE) #+ facet_wrap(~ Gender, ncol=1)
+	geom_point(alpha=.3) +
+	geom_smooth(method='loess', se = FALSE) 
 
 
 # Check balance
@@ -468,43 +490,74 @@ save(math.mice, bio1.mice, bio2.mice,
 # 		  nrow=1, ncol=2)
 # cowplot::ggsave('Figures/PSA-Combined-Bio1.pdf', width=12, height=5)
  				
+
 ##### Student Sanctification ###################################################
 library(likert)
 
 math.usage <- math[,c(29:32)] %>% melt() %>% drop_na(value)
 ggplot(math.usage, aes(x = variable)) + geom_bar() +
 	geom_text(aes(label = ..count..), stat = 'count', vjust = -0.4) +
-	xlab('How did you access Cerego?') + ylab('Count')
-
-
-
+	xlab('How did you access Cerego?') + ylab('Count') +
+	ggtitle("How did you access Cerego?", subtitle = 'Mathematics')
 
 # Math
 math.cerego1 <- math[,c(34:41)]
 math.cerego1.likert <- likert(math.cerego1)
-plot(math.cerego1.likert)
+plot(math.cerego1.likert) + ggtitle('Post Semester Student Survey Results',
+									subtitle = "Mathematics")
+ggsave('Figures/Survey-Math-PostSurvey1.png', width=9, height=4.5)
 
-math.cerego2 <- math[,c(42:50)]
+math.cerego2 <- math[,c(42:46)]
 math.cerego2.likert <- likert(math.cerego2)
-plot(math.cerego2.likert)
+plot(math.cerego2.likert) + ggtitle('What do you think of Cerego?',
+									subtitle = "Mathematics")
+ggsave('Figures/Survey-Math-PostSurvey2.png', width=9, height=4.5)
+
+math.cerego3 <- math[,c(47:50)]
+math.cerego3.likert <- likert(math.cerego3)
+plot(math.cerego3.likert) + ggtitle('How helpful is Cerego compared to other resources you use to learn\nthe courework?',
+									subtitle = "Mathematics")
+ggsave('Figures/Survey-Math-PostSurvey3.png', width=9, height=4.5)
 
 # Bio 1
 bio1.cerego1 <- biology1[,c(28:35)]
 bio1.cerego1.likert <- likert(bio1.cerego1)
-plot(bio1.cerego1.likert)
+plot(bio1.cerego1.likert) + ggtitle('Post Semester Student Survey Results',
+									subtitle = "Biology 1")
+ggsave('Figures/Survey-Biology1-PostSurvey1.png', width=9, height=4.5)
 
-bio1.cerego2 <- biology1[,c(36:44)]
+bio1.cerego2 <- biology1[,c(36:40)]
 bio1.cerego2.likert <- likert(bio1.cerego2)
-plot(bio1.cerego2.likert)
+plot(bio1.cerego2.likert) + ggtitle('What do you think of Cerego?',
+									subtitle = "Biology 1")
+ggsave('Figures/Survey-Biology1-PostSurvey2.png', width=9, height=4.5)
+
+bio1.cerego3 <- biology1[,c(41:44)]
+bio1.cerego3.likert <- likert(bio1.cerego3)
+plot(bio1.cerego3.likert) + ggtitle('How helpful is Cerego compared to other resources you use to learn\nthe courework?',
+									subtitle = "Biology 1")
+ggsave('Figures/Survey-Biology1-PostSurvey3.png', width=9, height=4.5)
+
 
 # Bio 2
 bio2.cerego1 <- biology2[,c(34:41)]
 bio2.cerego1.likert <- likert(bio2.cerego1)
-plot(bio2.cerego1.likert)
+plot(bio2.cerego1.likert) + ggtitle('Post Semester Student Survey Results',
+									subtitle = "Biology 2")
+ggsave('Figures/Survey-Biology2-PostSurvey1.png', width=9, height=4.5)
 
-bio2.cerego2 <- biology2[,c(42:50)]
+bio2.cerego2 <- biology2[,c(42:46)]
 bio2.cerego2.likert <- likert(bio2.cerego2)
-plot(bio2.cerego2.likert)
+plot(bio2.cerego2.likert) + ggtitle('What do you think of Cerego?',
+									subtitle = "Biology 2")
+ggsave('Figures/Survey-Biology2-PostSurvey2.png', width=9, height=4.5)
+
+bio2.cerego3 <- biology2[,c(47:50)]
+bio2.cerego3.likert <- likert(bio2.cerego3)
+plot(bio2.cerego3.likert) + ggtitle('How helpful is Cerego compared to other resources you use to learn\nthe courework?',
+									subtitle = "Biology 2")
+ggsave('Figures/Survey-Biology2-PostSurvey3.png', width=9, height=4.5)
+
 
 # Combine likert plots
 math.cerego1$Subject <- 'Math'
@@ -513,10 +566,11 @@ bio2.cerego1$Subject <- 'Biology 2'
 
 cerego1 <- rbind(math.cerego1, bio1.cerego1, bio2.cerego1)
 cerego1.likert <- likert(cerego1[,-ncol(cerego1)], grouping = cerego1$Subject)
-plot(cerego1.likert)
+plot(cerego1.likert, wrap = 100) + ggtitle('Post Semester Student Survey Results')
+ggplot2::ggsave('Figures/Likert-overall1-by-subject.pdf', width=8, height=10)
 
 cerego1.likert.overall <- likert(cerego1[,-ncol(cerego1)])
-plot(cerego1.likert.overall)
+plot(cerego1.likert.overall) + ggtitle('Post Semester Student Survey Results')
 ggplot2::ggsave('Figures/Likert-overall1.pdf', width=10, height=4.5)
 
 math.cerego2$Subject <- 'Math'
@@ -525,8 +579,22 @@ bio2.cerego2$Subject <- 'Biology 2'
 
 cerego2 <- rbind(math.cerego2, bio1.cerego2, bio2.cerego2)
 cerego2.likert <- likert(cerego2[,-ncol(cerego2)], grouping = cerego2$Subject)
-plot(cerego2.likert)
+plot(cerego2.likert, wrap = 100) + ggtitle('What do you think of Cerego?')
+ggplot2::ggsave('Figures/Likert-overall2-by-subject.pdf', width=8, height=10)
 
 cerego2.likert.overall <- likert(cerego2[,-ncol(cerego2)])
-plot(cerego2.likert.overall)
+plot(cerego2.likert.overall) + ggtitle('What do you think of Cerego?')
 ggplot2::ggsave('Figures/Likert-overall2.pdf', width=10, height=4.5)
+
+math.cerego3$Subject <- 'Math'
+bio1.cerego3$Subject <- 'Biology 1'
+bio2.cerego3$Subject <- 'Biology 2'
+
+cerego3 <- rbind(math.cerego3, bio1.cerego3, bio2.cerego3)
+cerego3.likert <- likert(cerego3[,-ncol(cerego3)], grouping = cerego3$Subject)
+plot(cerego3.likert, wrap = 100) + ggtitle('How helpful is Cerego compared to other resources you use to learn the courework?')
+ggplot2::ggsave('Figures/Likert-overall3-by-subject.pdf', width = 8, height = 10)
+
+cerego3.likert.overall <- likert(cerego3[,-ncol(cerego3)])
+plot(cerego3.likert.overall) + ggtitle('How helpful is Cerego compared to other resources you use to learn the courework?')
+ggplot2::ggsave('Figures/Likert-overall3.pdf', width = 10, height = 4.5)

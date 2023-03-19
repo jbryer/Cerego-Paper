@@ -1,0 +1,21 @@
+# Appendix B: Propensity Score Balance Statistics
+
+The following figures summarize the balance achieved from propensity score analysis.
+
+```{r balance-math, echo = FALSE, fig.cap='Absolute Standardized Covariate Effect Size With and Without Propensity Score Adjustment: Mathematics', fig.show="hold", out.width="80%"}
+knitr::include_graphics('../Figures/Balance-Math.pdf')
+```
+
+\newpage
+
+```{r balance-bio1, echo = FALSE, fig.cap='Absolute Standardized Covariate Effect Size With and Without Propensity Score Adjustment: Biology A', fig.show="hold", out.width="80%"}
+knitr::include_graphics('../Figures/Balance-Biology1.pdf')
+```
+
+\newpage
+
+```{r balance-bio2, echo = FALSE, fig.cap='Absolute Standardized Covariate Effect Size With and Without Propensity Score Adjustment: Biology B', fig.show="hold", out.width="80%"}
+knitr::include_graphics('../Figures/Balance-Biology2.pdf')
+```
+
+\newpage

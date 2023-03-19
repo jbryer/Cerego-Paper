@@ -1,0 +1,48 @@
+\clearpage
+\makeatletter
+\efloat@restorefloats
+\makeatother
+
+
+\begin{appendix}
+\hypertarget{logistic-regression-results}{%
+\section{Logistic Regression
+Results}\label{logistic-regression-results}}
+
+Output format: latex
+
+\captionsetup[table]{labelformat=empty,skip=1pt}
+\setlength{\LTpost}{0mm}
+\begin{longtable}{lcccccc}
+\toprule
+ & \multicolumn{2}{c}{\textbf{Mathematics}} & \multicolumn{2}{c}{\textbf{Biology A}} & \multicolumn{2}{c}{\textbf{Biology B}} \\ 
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+\textbf{Characteristic} & \textbf{log(OR)}\textsuperscript{1} & \textbf{p-value} & \textbf{log(OR)}\textsuperscript{1} & \textbf{p-value} & \textbf{log(OR)}\textsuperscript{1} & \textbf{p-value} \\ 
+\midrule
+Gender & 0.46 & 0.003 & 0.24 & 0.5 & 0.91 & 0.024 \\ 
+Ethnicity &  &  &  &  &  &  \\ 
+White & — &  & — &  & — &  \\ 
+Black & -0.12 & 0.5 & 0.18 & 0.7 & -1.0 & 0.028 \\ 
+Hispanic & -0.09 & 0.7 & 0.05 & >0.9 & -0.32 & 0.6 \\ 
+Other & -0.55 & 0.019 & -0.66 & 0.3 & -1.1 & 0.064 \\ 
+Military & -0.26 & 0.11 & -0.51 & 0.2 & -0.19 & 0.6 \\ 
+DegreeLevel & 0.12 & 0.5 & 0.09 & 0.8 & 0.42 & 0.2 \\ 
+GPA & 0.22 & 0.072 & 0.30 & 0.3 & -0.20 & 0.6 \\ 
+OverallGPA & 0.20 & 0.073 & 0.10 & 0.8 & 0.26 & 0.4 \\ 
+TransferCredits & 0.00 & 0.8 & 0.00 & 0.6 & -0.01 & 0.3 \\ 
+CreditRatio & -0.78 & 0.035 & -0.76 & 0.4 & 0.64 & 0.5 \\ 
+EarnedCredits & 0.00 & 0.8 & -0.02 & 0.3 & -0.02 & 0.4 \\ 
+Income & 0.00 & 0.9 & -0.08 & 0.4 & 0.00 & >0.9 \\ 
+Age & 0.01 & 0.15 & 0.00 & >0.9 & 0.03 & 0.2 \\ 
+DaysEnrolled & 0.00 & >0.9 & 0.00 & 0.4 & 0.00 & 0.079 \\ 
+FirstGeneration & -0.01 & >0.9 & -0.21 & 0.6 & -0.46 & 0.2 \\ 
+Employment & 0.16 & 0.085 & 0.41 & 0.2 & -0.47 & 0.061 \\ 
+ESL & -0.04 & 0.9 & 0.55 & 0.5 & 0.55 & 0.4 \\ 
+Pell & -0.07 & 0.6 & 0.02 & >0.9 & 0.08 & 0.9 \\ 
+Repeat & -0.58 & 0.11 & -0.35 & 0.5 & -0.68 & 0.2 \\ 
+\bottomrule
+\end{longtable}
+\begin{minipage}{\linewidth}
+\textsuperscript{1}OR = Odds Ratio\\
+\end{minipage}
+\end{appendix}
