@@ -173,7 +173,7 @@ knitr::include_graphics('../Figures/PSA-Bio2-Strata.pdf')
 
 # Student Satisfaction
 
-At the completion of the courses students were surveyed about their sanctification and use of Cerego within the course. The survey was divided into two parts: part one asked students about their overall satisfaction with Cerego using a five point Likert scale from strongly disagree to strongly agree; and part two asked students how Cerego compared to other learning modalities on a four point Likert scale ranging from not true to always true.
+At the completion of the courses students were surveyed about their satisfaction and use of Cerego within the course. The survey was divided into two parts: part one asked students about their overall satisfaction with Cerego using a five point Likert scale from strongly disagree to strongly agree; and part two asked students how Cerego compared to other learning modalities on a four point Likert scale ranging from not true to always true.
 
 ```{r likert-overall1, echo = FALSE, fig.cap='Student Satisfaction with Cerego', fig.show="hold", out.width="90%"}
 knitr::include_graphics('../Figures/Likert-overall1-by-subject.pdf')
