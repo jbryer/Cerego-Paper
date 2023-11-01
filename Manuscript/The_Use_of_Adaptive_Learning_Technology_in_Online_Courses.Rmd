@@ -1,20 +1,14 @@
 ---
-title             : "The Use of Adaptive Learning Technology in Online Courses"
+title             : "The Use of Adaptive Learning Technology in Mathematics and Biology"
 shorttitle        : "Cerego"
 author: 
-    #   - Conceptualization
-    #   - Writing - Original Draft Preparation
-    #   - Writing - Review & Editing
-    #   - Writing - Review & Editing
   - name          : "Jason Bryer"
     affiliation   : "1"
     corresponding : yes    # Define only one corresponding author
     address       : "119 W 31st St, New York, NY 10001"
     email         : "jason.bryer@cuny.edu"
-    # role:         # Contributorship roles (e.g., CRediT, https://casrai.org/credit/)
   - name          : "Bruce Homer"
     affiliation   : "2"
-    # role:
 affiliation:
   - id            : "1"
     institution   : "City University of New York, School of Professional Studies"
@@ -41,8 +35,8 @@ mask              : no
 draft             : no
 documentclass     : "apa6"
 classoption       : "man"
-# output            : papaja::apa6_pdf
-output            : papaja::apa6_word
+output            : papaja::apa6_pdf
+# output            : papaja::apa6_word
 editor_options: 
   chunk_output_type: console
 header-includes: 
@@ -83,6 +77,10 @@ Given the variation in what is considered to be personalized education, it is no
 
 Another emerging area of work on adaptive learning systems attempt to take into account the affective state of the learner. For example, Affective AutoTutor [@dmello2010] is a modified version of the intelligent tutoring system AutoTutor that attempts to automatically detect and adapt to the emotional state of the learner. AutoTuto uses contextual cues from the ongoing dialogue taking place in the tutoring system, as well as gross body cues and facial expression (detected via cameras) to infer learner affect. The intelligent tutoring system will then respond, for example, with an empathic and supportive comment – with compatible expressions being made by the on-screen AutoTutor agent (e.g., the agent may say, "I know this is difficult material, but I think you're on the right track!", while displaying an empathetic look). In their review, @dmello2012 report that adapting for learners' emotions in Affective Autotutor results in significantly greater learning outcomes compared to the standard version of AutoTutor. 
 
+The number of studies exploring adaptive learning technology has been growing over the last decade [@Martin2020,@Munoz2022]. The reviews by Marten et al and Munoz et al revealed the variety and types of adaptive learning technology as well as the varying emphasis ranging from student self-regulation to learning efficiency, the effectiveness of adaptive learning technology on student academic performance is not clear. An older meta-analysis conducted Verdu and colleagues (2008) identified 15 empirical studies with effect sizes ranging from 0.1 to 1.0. In the nine empirical studies examining academic outcomes identified by @Lim2023 conducted since 2016, seven had statistically significant results, one had a null finding, and one had mixed results (positive for chemistry, null for other subjects).
+
+This study was part of the Bill and Melinda Gates Foundation Adaptive Learning Market Acceleration Program (ALMAP) which funded 16 projects to examine 15 adaptive learning technologies. Results from @SRIEducation2016 indicated mixed results. Four of the 15 studies showed higher course grades with the remaining had no statistically significant impact on grades. The context of using adaptive technology often had an impact on results. For example, studies where adaptive learning replaced lectures had a positive impact on posttests whereas already fully online courses saw a smaller, but still positive, impact.
+
 Although there is a growing body of research supporting the personalized learning for different learner characteristics, the most robust data come from research on adapting instruction to account for learners' prior knowledge. For example, Kalyuga and his colleagues have identified the expertise reversal effect [e.g., @kalyuga2003], which occurs when learning scaffolds that help less knowledgeable students actually hinder learning in more expert learners. For example, instruction with worked examples provides learners with a problem and the solution to the problem. This approach has been shown to be quite effective for novice learners, but can induce a high cognitive load and hinder learning in more experienced learners [@kalyuga2003; @kalyuga2007]. 
 
 Adapting instruction to students' knowledge is very much a part of effective face-to-face instruction. Good teachers will ask students questions to find out what they know and don't know, and then adapt their instruction to correct students' misconceptions and to teach things that are just beyond their current knowledge, i.e., that are in the students' "zone of proximal development" [@vygotsky1978]. In effect, good teachers have a model of their students' conceptual understanding and then use this model to guide instruction.
@@ -91,7 +89,7 @@ Similarly, effective online learning systems must also have a model of students'
 
 ## The Cerego Learning Engine
 
-Cerego is a commercial learning engine (free to individual users) that allows users to study existing courses (sets) or design their own learning sets by defining specific items. The system models learners' memory of all items in a learning set at any given time, and, using a spaced repetition algorithm, schedules rehearsal of the items to reduce forgetting. Figure \@ref(fig:screenshots) shows a screen shot from the Cerego learning system for a set used in an introductory biology course. For this item, students are shown a diagram of a cellular process and asked whether or not they know it. If they say that they don't know it, they are shown the correct answer. If they say that they do know it, they are then asked to identify the cellular process, and are then given feedback as to whether or not they have provided the correct answer. The Cerego system keeps track of whether or not the student knew the correct answer and adjusts the learner's memory model accordingly.
+Cerego is a commercial learning engine (free to individual users) that allows users to study existing courses (sets) or design their own learning sets by defining specific items. The system models learners’ memory of all items in a learning set at any given time, and, using a spaced repetition algorithm, schedules rehearsal of the items to reduce forgetting. Spaced repetition algorithms present students with more difficult items more frequently and less difficult items less frequently. For Cerego, students are presented all items but frequency and timing for when students are represented an item is determined by their previous responses. Figure \@ref(fig:screenshots) shows a screen shot from the Cerego learning system for a set used in an introductory biology course. For this item, students are shown a diagram of a cellular process and asked whether or not they know it. If they say that they don't know it, they are shown the correct answer. If they say that they do know it, they are then asked to identify the cellular process, and are then given feedback as to whether or not they have provided the correct answer. The Cerego system keeps track of whether or not the student knew the correct answer and adjusts the learner's memory model accordingly.
 
 ```{r screenshots, echo = FALSE, fig.cap='Screen Shots from Cerego Adaptive Learning Technology', fig.show="hold", out.width="32.5%"}
 knitr::include_graphics('../Figures/Cerego_Screenshots.png')
@@ -130,7 +128,7 @@ apa_table(
 
 ## Participants
 
-Students from three existing asynchronous online undergraduate college courses served as participants for the study. The courses included Biology A (n = 193), Biology B (n = 220) and Mathematics (n = 1,347). The students ranged in age from 18 to 65 (mean age = 36), with roughly equal numbers of male and female students in each course. The students came from a diverse ethnic background, with 57% identifying as White, 20% identifying as African American, 3% identifying as Asian American, 12% identifying as Hispanic, and 8% indicating "other" when asked about their ethnic identity. All students were fluent in English. See Appendix A for descriptive statistics.
+Students from three existing asynchronous online undergraduate college courses served as participants for the study from 2015 to 2017. The courses included Biology A (n = 193), Biology B (n = 220) and Mathematics (n = 1,347). The students ranged in age from 18 to 65 (mean age = 36), with roughly equal numbers of male and female students in each course. The students came from a diverse ethnic background, with 57% identifying as White, 20% identifying as African American, 3% identifying as Asian American, 12% identifying as Hispanic, and 8% indicating "other" when asked about their ethnic identity. All students were fluent in English. See Appendix A for descriptive statistics.
 
 ### Materials and Procedures
 
@@ -138,7 +136,7 @@ For this study, the use of Cerego was designed to supplement already existing co
 
 Data for this study was collected across six eight-week terms (starting January, March, May, July, September, and November) and three 15-week terms (starting January, May, and September). Biology A represents the original course prior to the start of the study and ran in January, March, and May. This course had two large assessments given in weeks four and eight. This course underwent a major revision, in part to better align the course content to the content developed in Cerego, as well as to change the assessment model to weekly assessments. Biology B represents the revised course that ran in July, September, and November. As a result, Biology A has three outcome measures (midterm, final, and final grade) whereas for Biology B and Mathematics we have nine outcome measures (weekly quiz and final average).
 	
-At the beginning of each term, students were sent an introductory email and survey along with information on how to login to Cerego. This information was also included in the course as part of the introductory materials. A short video was also produced to give students an introduction to using the Cerego system. A total of 16 modules were created in Cerego that mapped directly to the course modules (Table 1). Students self-selected to utilize Cerego, however an incentive of 10 points for each module quiz were offered for students who used Cerego for at least one hour during that module. These 10 points were then subtracted for the analysis conducted here. Additionally, demographic data was collected from the institutions student information system, time spent using Cerego from the software vendor, and a post-survey to assess student satisfaction with Cerego were collected.
+At the beginning of each term, students were sent an introductory email and survey along with information on how to login to Cerego. This information was also included in the course as part of the introductory materials. A short video was also produced to give students an introduction to using the Cerego system. A total of 16 modules were created in Cerego that mapped directly to the course modules (Table 1). Students self-selected to utilize Cerego, however an incentive of 10 points for each module quiz were offered for students who used Cerego for at least one hour during that module. These 10 points were then subtracted for the analysis conducted here, therefore the total score corresponds to the students’ final course average without the incentive points. Additionally, demographic data was collected from the institutions student information system, time spent using Cerego from the software vendor, and a post-survey to assess student satisfaction with Cerego were collected.
 
 ## Analytic Strategy
 
@@ -153,7 +151,7 @@ In Phase II, average treatment effects are estimated using dependent sample t-te
 
 Data was retrieved from the College's student information system, online learning management system, and the online survey software. Once data was merged, missing covariates were imputed using a multiple imputation procedure [@vanbuuren2012] using the mice [@vanbuuren2011] package in R [@R-base]. To test whether data were missing at random, a binary shadow matrix was created whereby values missing prior to imputation were coded with 1s and non-missing values were coded with 0s. A separate logistic regression was performed combining the imputed matrix with the shadow matrix. Income for Biology B was the only missing covariate indicator that had a statistically significant regression coefficient. Since this had a negligible impact on the estimated propensity scores, it was not included in the final propensity score estimation.
 
-With the imputed dataset, propensity scores were estimated using logistic regression (Table 2) where treatment was defined as a student using Cerego sometime during the course. Balance was checked using covariate balance assessment plots (see Appendix B) using the `PSAgraphics` package [@helmreich2009] in R. These plots show the standardized effect size before (in red) and after (in blue) propensity score adjustment. The standardized effect size was reduced for all covariates where the initial effect size was large and with one exception for Biology B, the adjusted effect sizes are below 0.1 indicating that each covariate accounts for less that 1% of the variance indicating sufficient balance was achieved.
+With the imputed dataset, propensity scores were estimated using logistic regression (see Appendix C) where treatment was defined as a student using Cerego sometime during the course. Balance was checked using covariate balance assessment plots (see Appendix B) using the `PSAgraphics` package [@helmreich2009] in R. These plots show the standardized effect size before (in red) and after (in blue) propensity score adjustment. The standardized effect size was reduced for all covariates where the initial effect size was large and with one exception for Biology B, the adjusted effect sizes are below 0.1 indicating that each covariate accounts for less that 1% of the variance indicating sufficient balance was achieved.
 
 Students who used Cerego at any point during the semester were classified as being in the treatment group for estimating the propensity scores. This is also the treatment indicator for estimating the effect on overall course grade. However, stratification and matching were performed separately for each module outcome where treatment is determined by whether the student used Cerego for that particular module. As a result, a student may be in the treatment for one outcome analysis but in the control for another. 
 
@@ -183,24 +181,25 @@ knitr::include_graphics('../Figures/Likert-overall1-by-subject.pdf')
 knitr::include_graphics('../Figures/Likert-overall2-by-subject.pdf')
 ```
 
-```{r likert-overall3, echo = FALSE, fig.cap='How helpful is Cerego compared to other resources you use to learn the courework?', fig.show="hold", out.width="90%"}
+```{r likert-overall3, echo = FALSE, fig.cap='How helpful is Cerego compared to other resources you use to learn the coursework?', fig.show="hold", out.width="90%"}
 knitr::include_graphics('../Figures/Likert-overall3-by-subject.pdf')
 ```
 
-Figures \@ref(fig:likert-overall1)) and \@ref(fig:likert-overall2)) provide the results for each question on the student satisfaction survey. Approximately 71% of students were overall satisfied with Cerego within the course and only 14% dissatisfied. In terms of how Cerego compares to other instructional features in the courses, results are mixed. Although they were satisfied the results suggest that Cerego is best situated as a supplement instead of a primary instructional strategy.
+Figures \@ref(fig:likert-overall1), \@ref(fig:likert-overall2), and \@ref(fig:likert-overall3) provide the results for each question on the student satisfaction survey. Approximately 71% of students were overall satisfied with Cerego within the course and only 14% dissatisfied. In terms of how Cerego compares to other instructional features in the courses, results are mixed. Although they were satisfied the results suggest that Cerego is best situated as a supplement instead of a primary instructional strategy.
 
 # Discussion
 
 With the proliferation of computers, tablets, and smartphones, utilizing them for education is an obvious endeavor. It is possible that technology will help educators better differentiate instruction in order to instruct students within their zone of proximal development [@vygotsky1978]. The results of this study provide evidence that adaptive learning technology can have a positive impact on students' learning especially when implemented in asynchronous online courses where there are no other adaptations of the curriculum presentation. 
 
-The choice of two different subject areas also indicate that different content areas may benefit more from adaptive learning technology such as Cerego. When developing the content for Cerego, there were more issues with the Mathematics items than the Biology items in part due to the fact that the mathematics curriculum emphasized process where as Biology had a larger portion of the curriculum focused on definitions and core concepts. Cerego utilizes a flashcard metaphor, which is a learning strategy often used when memorization is desired. Although there are positive results for Mathematics, future studies may wish to examine the method of adaptation in relation to the type of content.
+The choice of two different subject areas also indicate that different content areas may benefit more from adaptive learning technology such as Cerego. When developing the content for Cerego, there were more issues with the Mathematics items than the Biology items in part due to the fact that the mathematics curriculum emphasized process whereas Biology had a larger portion of the curriculum focused on definitions and core concepts. Cerego utilizes a flashcard metaphor, which is a learning strategy often used when memorization is desired. Although there are positive results for Mathematics, future studies may wish to examine the method of adaptation in relation to the type of content.
 
-This study had a number of limitations, first is the issue of causality. As with many studies in education, randomization is often not possible or feasible. For this study we were required use observational data with propensity score methods, although it should be noted that propensity score analysis has been shown to provide consistent results with randomized designs [@CookShadishWong2008; @shadish2008]. Since this was a planned observational study we were able to ensure that important covariates were available for adjusting for selection bias. However, as with any quasi-experimental design, the results are potentially sensitive to any potential unmeasured confoundedness. 
+Few studies of adaptive learning technologies explored both student academic performance and student satisfaction. Our data not only shows the positive impact of adaptive learning technology on student academic outcomes, but students are also generally satisfied with the technology. However, the survey results suggest that adaptive technology should not necessarily replace current instructional strategies but instead supplement current pedagogy. 
+
+This study had a number of limitations, first is the issue of causality. As with many studies in education, randomization is often not possible or feasible. For this study we were required use observational data with propensity score methods, although it should be noted that propensity score analysis has been shown to provide consistent results with randomized designs [@CookShadishWong2008; @shadish2008]. Since this was a planned observational study we were able to ensure that important covariates were available for adjusting for selection bias. However, as with any quasi-experimental design, the results are potentially sensitive to any unmeasured confounders.
 
 Additionally, this study did not take full advantage of all the features Cerego provides. Specifically, Cerego provides a rich instructor dashboard where instructors can review the performance of individual items, modules, and individual students. The purpose of these tools is to provide instructors with information they can use to adapt their teaching to students' performance. Given the positive trends for students who utilized Cerego, future studies may wish to integrate the tool more fully into the curriculum.
 
-The results of this study suggest that the use of adaptive technology is a promising for increasing student outcomes, especially on localized, module (or unit) assessments. Adaptive technologies, and Cerego in particular, is a useful tool for instructors to provide for students but should considering making them a more integral component of the curriculum. 
-
+This study is an important contribution to the literature on adaptive learning technology. This study utilized a strong quasi-experimental design with a relatively large sample size that assesses both academic achievement and student satistifcation across two important subjects for STEM majors. Our results suggest that the use of adaptive technology is a promising for increasing student outcomes, especially on localized, module (or unit) assessments. Although additional research is necessary, these results support that adaptive technologies, and Cerego in particular, are useful tools for instructors to provide for students but should considering making them a more integral component of the curriculum.
 
 
 \newpage
